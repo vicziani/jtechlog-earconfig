@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>jtechlog-earconfig</groupId>
+        <artifactId>jtechlog-earconfig</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>earconfig-ear</artifactId>
+    <packaging>ear</packaging>
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <jboss.server.dir>C:/Kaffe/jboss-5.1.0.GA</jboss.server.dir>
+        <glassfish.home>/home/vicziani/Downloads/glassfish4</glassfish.home>
+        <glassfish.hostname>localhost</glassfish.hostname>
+        <glassfish.port>8080</glassfish.port>
+        <glassfish.username>admin</glassfish.username>
+        <glassfish.password></glassfish.password>
+        <glassfish.domain>domain1</glassfish.domain>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>earconfig-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>earconfig-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <modules>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>earconfig-web</artifactId>
+                            <contextRoot>/earconfig</contextRoot>
+                        </webModule>
+                        <ejbModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>earconfig-ejb</artifactId>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jboss5x</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <container>
+                                <type>installed</type>
+                                <containerId>jboss5x</containerId>
+                            </container>
+                            <configuration>
+                                <type>existing</type>
+                                <home>${jboss.server.dir}/server/default</home>
+                            </configuration>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>glassfish</id>
+            <build>
+                <plugins>
+                    <!-- http://stackoverflow.com/questions/19772950/cargo-hangs-while-starting-glassfish-4-x-and-uses-up-100-cpu -->
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <container>
+                                <containerId>glassfish4x</containerId>
+                                <home>${glassfish.home}</home>
+                                <type>installed</type>
+                            </container>
+                            <configuration>
+                                <type>existing</type>
+                                <home>${glassfish.home}/glassfish/domains</home>
+                                <properties>
+                                    <cargo.hostname>${glassfish.hostname}</cargo.hostname>
+                                    <cargo.servlet.port>${glassfish.port}</cargo.servlet.port>
+                                    <cargo.remote.username>${glassfish.username}</cargo.remote.username>
+                                    <cargo.remote.password>${glassfish.password}</cargo.remote.password>
+                                    <cargo.glassfish.domain.name>${glassfish.domain}</cargo.glassfish.domain.name>
+                                </properties>
+                            </configuration>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

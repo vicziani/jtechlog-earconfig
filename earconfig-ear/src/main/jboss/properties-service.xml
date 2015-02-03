@@ -1,0 +1,4 @@
+    <attribute name="Properties">
+       earconfig.system.property=Hello System Property!
+    </attribute>
+
