@@ -10,7 +10,7 @@ public class EarConfigBean implements EarConfig {
 
     private static final String SYSTEM_PROPERTY_NAME = "earconfig.system.property";
 
-    private static final String[] NAMES = new String[]{"earconfig/string", "earconfig/url", "earconfig/inetaddress", "earconfig/properties"};
+    private static final String[] NAMES = new String[]{"earconfig/string", "earconfig/url", "earconfig/properties"};
 
     @Override
     public String readConfigurationsFromSystemProperty() {
@@ -23,7 +23,7 @@ public class EarConfigBean implements EarConfig {
         Object[] configurations = new Object[NAMES.length];
 
         // Read global names
-        Context context = null;
+        Context context;
         try {
             context = new InitialContext();
         } catch (NamingException ne) {

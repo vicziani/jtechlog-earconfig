@@ -12,13 +12,14 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <jboss.server.dir>C:/Kaffe/jboss-5.1.0.GA</jboss.server.dir>
+        <wildfly.server.dir>/home/vicziani/Downloads/wildfly-8.2.0.Final</wildfly.server.dir>
         <glassfish.home>/home/vicziani/Downloads/glassfish4</glassfish.home>
         <glassfish.hostname>localhost</glassfish.hostname>
         <glassfish.port>8080</glassfish.port>
         <glassfish.username>admin</glassfish.username>
         <glassfish.password></glassfish.password>
         <glassfish.domain>domain1</glassfish.domain>
+        <weblogic.home>/home/vicziani/Downloads/wls12130</weblogic.home>
     </properties>
 
     <dependencies>
@@ -60,7 +61,7 @@
 
     <profiles>
         <profile>
-            <id>jboss5x</id>
+            <id>wildfly</id>
             <build>
                 <plugins>
                     <plugin>
@@ -69,11 +70,12 @@
                         <configuration>
                             <container>
                                 <type>installed</type>
-                                <containerId>jboss5x</containerId>
+                                <containerId>wildfly8x</containerId>
+                                <home>${wildfly.server.dir}</home>
                             </container>
                             <configuration>
                                 <type>existing</type>
-                                <home>${jboss.server.dir}/server/default</home>
+                                <home>${wildfly.server.dir}/standalone</home>
                             </configuration>
                         </configuration>
                     </plugin>
@@ -104,6 +106,28 @@
                                     <cargo.remote.password>${glassfish.password}</cargo.remote.password>
                                     <cargo.glassfish.domain.name>${glassfish.domain}</cargo.glassfish.domain.name>
                                 </properties>
+                            </configuration>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>weblogic</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <configuration>
+                            <container>
+                                <type>installed</type>
+                                <containerId>weblogic12x</containerId>
+                                <home>${weblogic.home}/wlserver</home>
+                            </container>
+                            <configuration>
+                                <type>existing</type>
+                                <home>${weblogic.home}/user_projects/domains/mydomain</home>
                             </configuration>
                         </configuration>
                     </plugin>
